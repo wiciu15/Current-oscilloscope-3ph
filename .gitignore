@@ -1,6 +1,6 @@
 # Prerequisites
 *.d
-
+*.launch
 # Object files
 *.o
 *.ko
@@ -50,3 +50,8 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+
+.settings/
+Debug/
+STM32F401CCUX_FLASH.ld
