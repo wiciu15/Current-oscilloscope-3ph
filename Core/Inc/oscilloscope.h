@@ -9,8 +9,8 @@
 #define INC_OSCILLOSCOPE_H_
 #include "main.h"
 
-
 void prepareBackground(void);
+void drawVBaseUnits(void);
 void drawBuffer(void);
 
 #endif /* INC_OSCILLOSCOPE_H_ */

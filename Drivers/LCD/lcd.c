@@ -628,8 +628,10 @@ void LCD_Test(void)
 
   UG_FillScreen(C_BLACK);
 
+  LCD_PutStr(16, 30, "3ph CURRENT OSCILLOSCOPE", FONT_12X16, C_CADET_BLUE, C_BLACK);
   LCD_PutStr(80, 110, "STARTING TEST", FONT_12X16, C_CADET_BLUE, C_BLACK);
-  HAL_Delay(1000);
+  LCD_PutStr(70, 210, "W.Burdecki 2023", FONT_12X16, C_CADET_BLUE, C_BLACK);
+  HAL_Delay(2000);
 
   UG_FillScreen(C_BLACK);
   show=start=HAL_GetTick();
@@ -637,23 +639,23 @@ void LCD_Test(void)
 
   UG_FillScreen(C_RED);
   UG_Update();
-  HAL_Delay(200);
+  HAL_Delay(100);
   UG_FillScreen(C_GREEN);
   UG_Update();
-  HAL_Delay(200);
+  HAL_Delay(100);
   UG_FillScreen(C_BLUE);
   UG_Update();
-  HAL_Delay(200);
+  HAL_Delay(100);
   UG_FillScreen(C_BLACK);
   UG_Update();
-  HAL_Delay(200);
+  HAL_Delay(100);
 
   clearTime();
   UG_FillScreen(C_WHITE);
   printTime();
   LCD_PutStr(10, 5, "Fill", DEFAULT_FONT, C_RED, C_WHITE);
   UG_Update();
-  HAL_Delay(300);
+  HAL_Delay(700);
 
   UG_FillScreen(C_BLUE);
   LCD_PutStr(10, 5, "Line", DEFAULT_FONT, C_YELLOW, C_RED);
@@ -663,7 +665,7 @@ void LCD_Test(void)
   UG_DrawLine(10, 30, 100, 100, C_WHITE);
   UG_Update();
   printTime();
-  HAL_Delay(300);
+  HAL_Delay(100);
 
   UG_FillScreen(C_BLUE);
   LCD_PutStr(10, 5, "Rect", DEFAULT_FONT, C_YELLOW, C_RED);
@@ -671,7 +673,7 @@ void LCD_Test(void)
   UG_DrawFrame(10, 30, 100, 100, C_WHITE);
   UG_Update();
   printTime();
-  HAL_Delay(300);
+  HAL_Delay(100);
 
   UG_FillScreen(C_BLUE);
   LCD_PutStr(10, 5, "Filled Rect", DEFAULT_FONT, C_YELLOW, C_RED);
@@ -679,7 +681,7 @@ void LCD_Test(void)
   UG_FillFrame(10, 30, 100, 100, C_WHITE);
   UG_Update();
   printTime();
-  HAL_Delay(300);
+  HAL_Delay(100);
 
   UG_FillScreen(C_BLUE);
   LCD_PutStr(10, 5, "Mesh.", DEFAULT_FONT, C_YELLOW, C_RED);
@@ -687,7 +689,7 @@ void LCD_Test(void)
   UG_DrawMesh(10, 30, 100, 100, 5, C_WHITE);
   UG_Update();
   printTime();
-  HAL_Delay(300);
+  HAL_Delay(100);
 
   UG_FillScreen(C_BLUE);
   LCD_PutStr(10, 5, "Circle", DEFAULT_FONT, C_YELLOW, C_RED);
@@ -695,7 +697,7 @@ void LCD_Test(void)
   UG_DrawCircle(45, 65, 30, C_WHITE);
   UG_Update();
   printTime();
-  HAL_Delay(300);
+  HAL_Delay(100);
 
   UG_FillScreen(C_BLUE);
   LCD_PutStr(10, 5, "Filled Circle", DEFAULT_FONT, C_YELLOW, C_RED);
@@ -704,7 +706,7 @@ void LCD_Test(void)
   UG_FillCircle(45, 65, 30, C_WHITE);
   UG_Update();
   printTime();
-  HAL_Delay(300);
+  HAL_Delay(100);
 
   UG_FillScreen(C_BLUE);
   LCD_PutStr(10, 5, "Triangle", DEFAULT_FONT, C_YELLOW, C_RED);
@@ -745,7 +747,7 @@ void LCD_Test(void)
   // Create Textbox
   UG_TextboxCreate(&window_1, &textbox_1, TXB_ID_0, 10, 40, LCD_WIDTH-20, 65);
   UG_TextboxSetFont(&window_1, TXB_ID_0, DEFAULT_FONT);
-  UG_TextboxSetText(&window_1, TXB_ID_0, "Grafika OK");
+  UG_TextboxSetText(&window_1, TXB_ID_0, "Grafika OK\r\n\r\nRGB nosi buty na rzepe");
   UG_TextboxSetBackColor(&window_1, TXB_ID_0, C_LIGHT_YELLOW);
   UG_TextboxSetForeColor(&window_1, TXB_ID_0, C_BLACK);
   UG_TextboxSetAlignment(&window_1, TXB_ID_0, ALIGN_CENTER);
@@ -757,7 +759,7 @@ void LCD_Test(void)
   UG_WindowShow(&window_1);
   UG_Update();
   printTime();
-  HAL_Delay(1000);
+  HAL_Delay(100);
   uint32_t btn_time,progress_time,now;
   uint8_t i=0, j=0,u=0;
   btn_time = progress_time = HAL_GetTick();

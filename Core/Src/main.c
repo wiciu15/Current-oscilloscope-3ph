@@ -50,6 +50,8 @@ TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
 uint8_t aquisition_finished=0;
+uint8_t button_int=0;
+uint32_t button_int_time=0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -60,6 +62,13 @@ static void MX_DMA_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
+	aquisition_finished=1;
+}
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	button_int=1;
+	button_int_time=HAL_GetTick();
+}
 
 /* USER CODE END PFP */
 
@@ -95,15 +104,16 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_DMA_Init();
+  MX_GPIO_Init();MX_DMA_Init();
   MX_ADC1_Init();
+
   MX_SPI1_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   LCD_init();
   LCD_Test();
   prepareBackground();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,6 +121,15 @@ int main(void)
   while (1)
   {
 	  if(aquisition_finished){drawBuffer();aquisition_finished=0;}
+	  if(button_int && HAL_GetTick()-button_int_time>100){
+		  button_int=0;
+		  if(htim3.Instance->ARR>600){
+		  htim3.Instance->ARR-=500;
+		  }else{
+			  htim3.Instance->ARR=3999;
+			  drawVBaseUnits();
+		  }
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -366,6 +385,12 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, LCD_RES_Pin|LCD_DC_Pin|LCD_CS_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin : PA0 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
   /*Configure GPIO pins : LCD_RES_Pin LCD_DC_Pin LCD_CS_Pin */
   GPIO_InitStruct.Pin = LCD_RES_Pin|LCD_DC_Pin|LCD_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -373,15 +398,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
 }
 
 /* USER CODE BEGIN 4 */
-/**
-  * @brief  DMA conversion complete callback
-  * @note   This function is executed when the transfer complete interrupt
-  *         is generated
-  * @retval None
-  */
+
 
 /* USER CODE END 4 */
 
