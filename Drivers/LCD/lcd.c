@@ -631,7 +631,7 @@ void LCD_Test(void)
   LCD_PutStr(16, 30, "3ph CURRENT OSCILLOSCOPE", FONT_12X16, C_CADET_BLUE, C_BLACK);
   LCD_PutStr(80, 110, "STARTING TEST", FONT_12X16, C_CADET_BLUE, C_BLACK);
   LCD_PutStr(70, 210, "W.Burdecki 2023", FONT_12X16, C_CADET_BLUE, C_BLACK);
-  HAL_Delay(2000);
+  HAL_Delay(1000);
 
   UG_FillScreen(C_BLACK);
   show=start=HAL_GetTick();
@@ -639,23 +639,23 @@ void LCD_Test(void)
 
   UG_FillScreen(C_RED);
   UG_Update();
-  HAL_Delay(100);
+  HAL_Delay(50);
   UG_FillScreen(C_GREEN);
   UG_Update();
-  HAL_Delay(100);
+  HAL_Delay(50);
   UG_FillScreen(C_BLUE);
   UG_Update();
-  HAL_Delay(100);
+  HAL_Delay(50);
   UG_FillScreen(C_BLACK);
   UG_Update();
-  HAL_Delay(100);
+  HAL_Delay(50);
 
   clearTime();
   UG_FillScreen(C_WHITE);
   printTime();
   LCD_PutStr(10, 5, "Fill", DEFAULT_FONT, C_RED, C_WHITE);
   UG_Update();
-  HAL_Delay(700);
+  HAL_Delay(400);
 
   UG_FillScreen(C_BLUE);
   LCD_PutStr(10, 5, "Line", DEFAULT_FONT, C_YELLOW, C_RED);
@@ -714,7 +714,7 @@ void LCD_Test(void)
   UG_DrawTriangle(10, 30, 100, 30, 50, 100, C_WHITE);
   UG_Update();
   printTime();
-  HAL_Delay(300);
+  HAL_Delay(100);
 
   UG_FillScreen(C_BLUE);
   clearTime();
@@ -722,7 +722,7 @@ void LCD_Test(void)
   UG_FillTriangle(10, 30, 100, 30, 50, 100, C_WHITE);
   UG_Update();
   printTime();
-  HAL_Delay(300);
+  HAL_Delay(100);
 
   clearTime();
   // Create the window
@@ -765,7 +765,7 @@ void LCD_Test(void)
   btn_time = progress_time = HAL_GetTick();
   while(1){
     now=HAL_GetTick();
-    if(now-btn_time>199){
+    if(now-btn_time>99){
       btn_time=now;
       u=1;
       i++;
@@ -774,7 +774,7 @@ void LCD_Test(void)
         break;
       }
     }
-    if(now-progress_time>19){
+    if(now-progress_time>9){
       progress_time=now;
       u=1;
       if(++j>100)
@@ -801,7 +801,7 @@ void LCD_Test(void)
   UG_Update();
   UG_FontSetTransparency(t);
 #endif
-  HAL_Delay(1000);
+  HAL_Delay(100);
 }
 
 

@@ -7,7 +7,10 @@
 #include "lcd.h"
 #include "oscilloscope.h"
 #include <stdio.h>
+#include <math.h>
 
+#define _SQRT3 1.73205
+#define SAMPLES_PER_AMP 124.12f
 extern ADC_HandleTypeDef hadc1;
 extern TIM_HandleTypeDef htim3;
 
@@ -62,6 +65,39 @@ void drawVBaseUnits(void){
 		UG_PutString(283, 205, "-6A");
 	}
 }
+
+float calculate_electric_angle(float I_U, float I_V){
+	float I_alpha=I_U;
+	float I_beta=((1/_SQRT3)*I_U)+((2/_SQRT3)*I_V);
+	float angle_deg=atan2f(I_beta,I_alpha)*57.2957;
+	return angle_deg;
+}
+
+void print_avg(){
+	int32_t avg_U_sum=0;
+	int32_t avg_V_sum=0;
+	int32_t avg_W_sum=0;
+	for(uint16_t i=0;i<300;i++){
+		avg_U_sum+=(int16_t)ADC_buffer[i*3];
+		avg_V_sum+=(int16_t)ADC_buffer[(i*3)+1];
+		avg_W_sum+=(int16_t)ADC_buffer[(i*3)+2];
+	}
+	float avg_U=((avg_U_sum/300)-zerocurrentreading)/SAMPLES_PER_AMP;
+	float avg_V=((avg_V_sum/300)-zerocurrentreading)/SAMPLES_PER_AMP;
+	float avg_W=((avg_W_sum/300)-zerocurrentreading)/SAMPLES_PER_AMP;
+	float angle = calculate_electric_angle(avg_U, avg_V);
+	char measurement_string[25];
+	char measurement_string2[25];
+	sprintf(measurement_string,"U:%.2fA V:%.2fA W:%.2fA",avg_U,avg_V, avg_W);
+	sprintf(measurement_string2,"Angle: %.1fdeg",angle);
+	UG_SetBackcolor(C_DARK_GRAY);
+	UG_SetForecolor(C_WHITE);
+	UG_PutString(0, 190, measurement_string);
+	UG_PutString(0, 205, measurement_string2);
+	UG_SetBackcolor(C_BLACK);
+	UG_SetForecolor(C_YELLOW);
+}
+
 void drawBuffer(){
 	if(zerocurrentreading==0){
 		uint32_t sum=0;
@@ -100,4 +136,5 @@ void drawBuffer(){
 	char sampling_time_string[15];
 	sprintf(sampling_time_string,"Refresh: %d ms ",sampling_time);
 	UG_PutString(10, 225, sampling_time_string);
+	print_avg();
 }
